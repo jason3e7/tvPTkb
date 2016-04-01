@@ -261,6 +261,8 @@ Error message and password prompt
 
 <li>$:/themes/tiddlywiki/vanilla</li>
 
+<li>Cross-site Scripting</li>
+
 <li>How to use tvPTkm</li>
 
 </ul>
@@ -6375,7 +6377,7 @@ Error message and password prompt
 <div created="20160308064705589" modified="20160308064711341" title="$:/SiteTitle">
 <pre>tvPTkm</pre>
 </div>
-<div created="20160324064859271" modified="20160324065155415" title="$:/state/showeditpreview">
+<div created="20160324064859271" modified="20160401020110682" title="$:/state/showeditpreview">
 <pre>no</pre>
 </div>
 <div created="20160324062929096" modified="20160324062930465" title="$:/state/tab-1749438307">
@@ -6387,7 +6389,7 @@ Error message and password prompt
 <div created="20160308064715242" modified="20160324065547630" title="$:/state/tab/sidebar--1835078512">
 <pre>$:/core/ui/SideBar/Open</pre>
 </div>
-<div list="[[How to use tvPTkm]]" title="$:/StoryList">
+<div list="[[Cross-site Scripting]] [[How to use tvPTkm]]" title="$:/StoryList">
 <pre></pre>
 </div>
 <div plugin-type="info" title="$:/temp/info-plugin" type="application/json">
@@ -6820,6 +6822,36 @@ This plugin contains tools to help slice up long texts into individual tiddlers.
         }
     }
 }</pre>
+</div>
+<div created="20160401013946949" modified="20160401020111468" tags="" title="Cross-site Scripting" type="text/x-markdown">
+<pre>#正式命名
+跨網站 Scripting
+
+#風險值
+高
+
+#本質說明
+1. 因該位置在程式中能執行JavaScript語法，如：URL中id=1、TextBox 儲存位置。
+2. 如攻擊者在該位置插入js語法，則能使用XSS攻擊手法。
+
+#影響
+網頁參數未進行檢核，允許攻擊者自行建構任何Script語法，若攻擊者將惡意行為之Script語法嵌入網頁中，當使用者瀏覽網頁時，則語法將在瀏覽器中被執行。
+
+#檢測方式
+1. 測試基本有無過濾XSS：&lt;script&gt;alert(123)&lt;/script&gt;
+2. 未修補完善可能可以造成 釣魚連結，測試方法：&quot; onclick=&quot;alert(1)&quot;
+3. by pass 簡易過濾機制：&quot;%3cscript%3ealert(123)%3c/script%3e
+4. 先中斷掉前面的語法在重新植入js：&quot;&gt; &lt;script&gt;alert(1)&lt;/script&gt;
+
+#修補辦法
+1. 限定參數型別
+2. 限定特殊符號過濾，例：&lt;(小於)，&gt;(大於)，'(單引號)，&quot;(雙   引號)，%(百分比符號)，; (分號)，+ (加號)，&amp; (連接符號)
+3. HTML encode
+
+#OWASP Testing Guide v4
+1. Testing for Reflected Cross Site Scripting (OTG-INPVAL-001)
+2. Testing for Stored Cross Site Scripting (OTG-INPVAL-002)
+3. Testing for DOM based Cross Site Scripting (OTG-CLIENT-001)</pre>
 </div>
 <div created="20160324064837154" modified="20160324065204879" tags="" title="How to use tvPTkm" type="text/x-markdown">
 <pre># Read
