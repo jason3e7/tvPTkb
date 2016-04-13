@@ -261,6 +261,8 @@ Error message and password prompt
 
 <li>$:/themes/tiddlywiki/vanilla</li>
 
+<li>Autocomplete Login Password</li>
+
 <li>Cross-site Scripting</li>
 
 <li>How to use tvPTkm</li>
@@ -6379,8 +6381,8 @@ Error message and password prompt
 <div created="20160308064705589" modified="20160308064711341" title="$:/SiteTitle">
 <pre>tvPTkm</pre>
 </div>
-<div created="20160324064859271" modified="20160411010929761" title="$:/state/showeditpreview">
-<pre>yes</pre>
+<div created="20160324064859271" modified="20160413073413922" title="$:/state/showeditpreview">
+<pre>no</pre>
 </div>
 <div created="20160324062929096" modified="20160324062930465" title="$:/state/tab-1749438307">
 <pre>$:/core/ui/ControlPanel/Plugins</pre>
@@ -6391,7 +6393,7 @@ Error message and password prompt
 <div created="20160308064715242" modified="20160411010856848" title="$:/state/tab/sidebar--1835078512">
 <pre>$:/core/ui/SideBar/Recent</pre>
 </div>
-<div list="[[Cross-site Scripting]] [[SQL Injection]] [[How to use tvPTkm]]" title="$:/StoryList">
+<div list="[[Autocomplete Login Password]] [[How to use tvPTkm]]" title="$:/StoryList">
 <pre></pre>
 </div>
 <div plugin-type="info" title="$:/temp/info-plugin" type="application/json">
@@ -6824,6 +6826,30 @@ This plugin contains tools to help slice up long texts into individual tiddlers.
         }
     }
 }</pre>
+</div>
+<div created="20160413073119438" modified="20160413073920724" tags="" title="Autocomplete Login Password" type="text/x-markdown">
+<pre>#正式命名
+未停用密碼欄位的自動完成 HTML 屬性
+
+#風險值
+低
+
+#本質說明
+1.在HTML Login Form，Password屬性未正確設定。
+
+#檢測方式
+1.打開Browser，先打入帳號、密碼後登出，再次嘗試打入帳號，試觀察密碼欄是否有自動帶入值。
+
+2.打開Browser，按F12，檢測HTML中的password欄位有無設定autocomplete=off
+
+#修補辦法
+在HTML屬性中，input欄位針對autocomplete屬性有兩種狀態，在沒有設定autocomplete這個屬性的狀況下，會預設為&quot;on&quot;，請加入autocomplete這個屬性並設為&quot;off&quot;；若已經設autocomplete&quot;on&quot;，則請改設定為autocomplete=&quot;off&quot;。
+
+#影響
+網頁輸入帳號密碼欄位，若使用了自動完成的HTML屬性，則會在使用者輸入完帳號後自動帶入密碼欄位應帶入的值，則會造成攻擊者只需知道帳號(明碼)就可取得一般使用者的權限。
+
+#OWASP Testing Guide v4
+Test remember password functionality (OTG-AUTHN-005)</pre>
 </div>
 <div created="20160401013946949" modified="20160401020111468" tags="" title="Cross-site Scripting" type="text/x-markdown">
 <pre>#正式命名
