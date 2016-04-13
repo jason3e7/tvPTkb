@@ -117,6 +117,8 @@ Error message and password prompt
 
 <p>This <a class="tc-tiddlylink-external" href="http://tiddlywiki.com" target="_blank">TiddlyWiki</a> contains the following tiddlers:</p><p><ul>
 
+<li>__VIEWSTATE Encryption</li>
+
 <li>$:/config/PageControlButtons/Visibility/$:/core/ui/Buttons/control-panel</li>
 
 <li>$:/config/PageControlButtons/Visibility/$:/core/ui/Buttons/home</li>
@@ -279,6 +281,28 @@ Error message and password prompt
 <!--~~ Ordinary tiddlers ~~-->
 
 <div id="storeArea" style="display:none;">
+<div created="20160413080136904" modified="20160413080250635" tags="" title="__VIEWSTATE Encryption" type="text/x-markdown">
+<pre>#正式命名
+未加密的__VIEWSTATE 參數
+
+#風險值
+低
+
+#本質說明
+於可能存在機敏資訊的__VIEWSTATE參數中，未進行適當的加密。
+
+#檢測方式
+1. 於訪問受測網頁時(如登入動作的封包)，利用封包攔截工具(如Burp Suite)，查看是否有存在VIEWSTATE資訊，而該資訊是否使用足夠強度的加密演算法。
+
+#修補辦法
+1. 修改 Web.Config 檔來加密 VIEWSTATE 參數
+
+#影響
+一般瀏覽器會有快取頁面的功能，會在硬碟上保留一個網頁快取區，讓使用者在二度瀏覽網頁時，加速網頁顯現。也因此可能在快取頁面，儲存機敏資訊在瀏覽器的快取中，會有資訊洩漏的風險。建議將此功能關閉。
+
+#OWASP Testing Guide v4
+??? //Need to check later </pre>
+</div>
 <div created="20160308064724042" modified="20160308064725666" title="$:/config/PageControlButtons/Visibility/$:/core/ui/Buttons/control-panel">
 <pre>hide</pre>
 </div>
@@ -6393,7 +6417,7 @@ Error message and password prompt
 <div created="20160308064715242" modified="20160411010856848" title="$:/state/tab/sidebar--1835078512">
 <pre>$:/core/ui/SideBar/Recent</pre>
 </div>
-<div list="[[Autocomplete Login Password]] [[How to use tvPTkm]]" title="$:/StoryList">
+<div list="[[__VIEWSTATE Encryption]] [[Autocomplete Login Password]] [[How to use tvPTkm]]" title="$:/StoryList">
 <pre></pre>
 </div>
 <div plugin-type="info" title="$:/temp/info-plugin" type="application/json">
