@@ -6418,7 +6418,7 @@ Error message and password prompt
 <div created="20160308064715242" modified="20160411010856848" title="$:/state/tab/sidebar--1835078512">
 <pre>$:/core/ui/SideBar/Recent</pre>
 </div>
-<div list="[[Autocomplete Login Password]] [[SQL Injection]] [[__VIEWSTATE doesn't Encryption]] [[How to use tvPTkm]]" title="$:/StoryList">
+<div list="[[Cross-site Scripting]] [[How to use tvPTkm]]" title="$:/StoryList">
 <pre></pre>
 </div>
 <div plugin-type="info" title="$:/temp/info-plugin" type="application/json">
@@ -6876,7 +6876,7 @@ This plugin contains tools to help slice up long texts into individual tiddlers.
 #OWASP Testing Guide v4
 Test remember password functionality (OTG-AUTHN-005)</pre>
 </div>
-<div created="20160401013946949" modified="20160401020111468" tags="" title="Cross-site Scripting" type="text/x-markdown">
+<div created="20160401013946949" modified="20160418013258119" tags="" title="Cross-site Scripting" type="text/x-markdown">
 <pre>#正式命名
 跨網站 Scripting
 
@@ -6897,9 +6897,16 @@ Test remember password functionality (OTG-AUTHN-005)</pre>
 4. 先中斷掉前面的語法在重新植入js：&quot;&gt; &lt;script&gt;alert(1)&lt;/script&gt;
 
 #修補辦法
-1. 限定參數型別
-2. 限定特殊符號過濾，例：&lt;(小於)，&gt;(大於)，'(單引號)，&quot;(雙   引號)，%(百分比符號)，; (分號)，+ (加號)，&amp; (連接符號)
-3. HTML encode
+1. 限制使用者於URL上任意更改URL所帶的參數、以保持Server端所接收的資料的一致性。
+2. 嚴格的訂定並確定所有的input 參數以及結果。例如(Cookies, headers, query strings, forms, hidden欄位等等) 。
+3. 檢查來自POST 和 GET requests的 responses、並確認這些回傳的Responses是有效的。
+4. 在用戶端使用資料驗證機制。
+5. 在使用者輸入資料時、過濾衝突字元、括號、單雙引號，例：&lt;(小於)，&gt;(大於)，'(單引號)，&quot;(雙引號)，%(百分比符號)，; (分號)，+ (加號)，&amp; (連接符號)等。避免傳送出去的Scripts可被執行。
+6. 盡可能的限制客戶端所傳送出去的資料為字母、數字及其他符號(如標點符號、數學符號)。使用此種過濾機制可以減低攻擊者針對Cross-Site Scripting的攻擊。例如當攻擊者輸入&quot; &lt;script&gt;alert( 'aaa') &lt;/script&gt;&quot;, 此Script則會被過濾為&quot;scriptalertaaascript&quot;。 如必須使用到特殊標號、則可以將這些標號先置入在網頁中、以防攻擊者竄改。
+7. 使用雙重安全認證機制。
+8. 在使用任何Scripts時，必須確認來源。
+9. 不要相信或是使用來路不明的Scripts。
+10. HTML encode。
 
 #OWASP Testing Guide v4
 1. Testing for Reflected Cross Site Scripting (OTG-INPVAL-001)
