@@ -269,6 +269,10 @@ Error message and password prompt
 
 <li>How to use tvPTkm</li>
 
+<li>Microsoft IIS tilde directory enumeration</li>
+
+<li>OpenSSH Brute Force Password</li>
+
 <li>SQL Injection</li>
 
 </ul>
@@ -6406,8 +6410,8 @@ Error message and password prompt
 <div created="20160308064705589" modified="20160308064711341" title="$:/SiteTitle">
 <pre>tvPTkm</pre>
 </div>
-<div created="20160324064859271" modified="20160413073413922" title="$:/state/showeditpreview">
-<pre>no</pre>
+<div created="20160324064859271" modified="20160506020648744" title="$:/state/showeditpreview">
+<pre>yes</pre>
 </div>
 <div created="20160324062929096" modified="20160324062930465" title="$:/state/tab-1749438307">
 <pre>$:/core/ui/ControlPanel/Plugins</pre>
@@ -6418,7 +6422,7 @@ Error message and password prompt
 <div created="20160308064715242" modified="20160411010856848" title="$:/state/tab/sidebar--1835078512">
 <pre>$:/core/ui/SideBar/Recent</pre>
 </div>
-<div list="[[Cross-site Scripting]] [[How to use tvPTkm]]" title="$:/StoryList">
+<div list="[[OpenSSH Brute Force Password]] [[Microsoft IIS tilde directory enumeration]] [[How to use tvPTkm]]" title="$:/StoryList">
 <pre></pre>
 </div>
 <div plugin-type="info" title="$:/temp/info-plugin" type="application/json">
@@ -6918,6 +6922,83 @@ Test remember password functionality (OTG-AUTHN-005)</pre>
 search keyword
 # Write
 markdown</pre>
+</div>
+<div created="20160504075221027" modified="20160506021450048" tags="" title="Microsoft IIS tilde directory enumeration" type="text/x-markdown">
+<pre>#正式命名
+MS IIS 檔案/目錄名稱列舉
+
+#風險值
+中
+
+#本質說明
+當路經或檔案之字詞大於8個字元時，MS會自動產生一個短名稱，而導致之弱點。
+
+#影響
+攻擊者可以列舉出目錄名稱與檔案名稱。
+
+#檢測方式
+1.自動化測試 -&gt; 使用nmap
+
+&gt; nmap -p80 --script http-iis-short-name-brute &lt;target&gt;
+
+2.手動測試 -&gt; 假設目錄名稱為ABCDEFGHI
+
+&gt; /\*~1\*/.apsx 回應 O
+
+&gt; /A\*~1\*/.aspx 回應 O
+
+&gt; /B\*~1\*/.aspx 回應 X
+
+猜測到檔案名稱與未猜測到的回應不同，即有風險。
+
+#修補辦法
+1. 上WAF rule
+2. 關閉8.3 檔案格式。此方法只適用於新建立的檔案，原有檔案仍會保持該種檔案格式，建議採取以下措施：
+將整個網站目錄備份後，複製一份至新目錄(ex.tempnew)，然後將舊目錄(ex.temp)改名為tempold，再將新目錄改為舊目錄名(temp)，新目錄內的檔案及目錄名稱就不存在8.3 格式。
+(上述為官方提供之方法)
+3. 過濾 ~ (波浪)、*(米字號)、?(問號)
+
+#OWASP Testing Guide v4
+1.  Testing for Error Code (OTG-ERR-001)
+
+#Reference:
+1. https://soroush.secproject.com/downloadable/microsoft_iis_tilde_character_vulnerability_feature.pdf
+</pre>
+</div>
+<div created="20160429020239423" modified="20160506021517572" tags="" title="OpenSSH Brute Force Password" type="text/x-markdown">
+<pre>#正式命名
+OpenSSH連線之暴力密碼猜測
+
+#風險值
+中
+
+#本質說明
+因OpenSSH sshd daemon未檢查keyboard-interactive authentication methods 清單的重複性所導致。
+
+#影響
+遠端攻擊者可因此繞過最多猜測次數的限制，進而達到暴力猜測密碼的攻擊。
+
+#檢測方式
+1. 先確認有受影響之Linux 版本。(FreeBSD 10.1 and older versions / Red Hat Enterprise Linux 5 and earlier... etc.)
+
+2. 確認OpenSSH 版本。 (for 6.8 or 6.9)
+
+3. 如是處於有受影響之版本後，嘗試下列語法：
+
+&gt; ssh -l$1 -o StrictHostKeyChecking=no -oKbdInteractiveDevices=\`perl -e 'print &quot;pam,&quot; x 10000'\` $2
+
+&gt;(註：$1 = username, $2 = target IP)
+如果有此弱點，應可以錯誤嘗試密碼三次以上(不含三次)
+
+#修補辦法
+1. Update OpenSSH version。
+2. Update Linux version。
+
+#OWASP Testing Guide v4
+1.  Testing for Weak lock out mechanism (OTG-AUTHN-003)
+
+#CVE
+1. CVE-2015-5600</pre>
 </div>
 <div created="20160411010858402" modified="20160414084231653" tags="" title="SQL Injection" type="text/x-markdown">
 <pre>#正式命名
