@@ -263,6 +263,8 @@ Error message and password prompt
 
 <li>$:/themes/tiddlywiki/vanilla</li>
 
+<li>Apache Struts 2 (S2-032)</li>
+
 <li>Autocomplete Login Password</li>
 
 <li>Cross-site Scripting</li>
@@ -6410,7 +6412,7 @@ Error message and password prompt
 <div created="20160308064705589" modified="20160308064711341" title="$:/SiteTitle">
 <pre>tvPTkm</pre>
 </div>
-<div created="20160324064859271" modified="20160506020648744" title="$:/state/showeditpreview">
+<div created="20160324064859271" modified="20160506030308794" title="$:/state/showeditpreview">
 <pre>yes</pre>
 </div>
 <div created="20160324062929096" modified="20160324062930465" title="$:/state/tab-1749438307">
@@ -6422,7 +6424,7 @@ Error message and password prompt
 <div created="20160308064715242" modified="20160411010856848" title="$:/state/tab/sidebar--1835078512">
 <pre>$:/core/ui/SideBar/Recent</pre>
 </div>
-<div list="[[OpenSSH Brute Force Password]] [[Microsoft IIS tilde directory enumeration]] [[How to use tvPTkm]]" title="$:/StoryList">
+<div list="[[Apache Struts 2 (S2-032)]] [[Microsoft IIS tilde directory enumeration]] [[Cross-site Scripting]] [[How to use tvPTkm]]" title="$:/StoryList">
 <pre></pre>
 </div>
 <div plugin-type="info" title="$:/temp/info-plugin" type="application/json">
@@ -6856,6 +6858,41 @@ This plugin contains tools to help slice up long texts into individual tiddlers.
     }
 }</pre>
 </div>
+<div created="20160506025309620" modified="20160506030359650" tags="" title="Apache Struts 2 (S2-032)" type="text/x-markdown">
+<pre>#正式命名
+Apache Struts 2 S2-032
+
+#風險值
+嚴重
+
+#本質說明
+Dynamic Method Invocation is enabled.
+
+#影響
+攻擊者可以執行任意程式。
+
+#檢測方式
+1. 確認Struts 2版本 - Struts 2.3.20 - Struts Struts 2.3.28 (except 2.3.20.3 and 2.3.24.3)
+2. 執行測試語法
+
+&gt; 
+http: //xxx/index.action?method:%23_memberAccess%3D@ognl.OgnlContext@DEFAULT_MEMBER_ACCESS%2C%23test%3D%23context.get%28%23parameters.res%5B0%5D%29.getWriter%28%29%2C%23test.println%28%23parameters.command%5B0%5D%29%2C%23test.flush%28%29%2C%23test.close&amp;res=com.opensymphony.xwork2.dispatcher.HttpServletResponse&amp;command=%23%23%23Struts2%20S2-032%20Vulnerable%23%23%23
+
+&gt; 若有弱點會在頁面上看到 ###Struts2 S2-032 Vulnerable### 字樣
+
+#修補辦法
+1. 關閉動態方法調用，修改 Struts2 設定檔struts.xml，將struts.enable.DynamicMethodInvocation 設置為 false，如 &lt;constant name=&quot;struts.enable.DynamicMethodInvocation&quot; value=&quot;false&quot; /&gt;
+
+#OWASP Testing Guide v4
+1.  
+
+#CVE
+1. CVE-2016-3081
+
+#Reference
+1. https://struts.apache.org/docs/s2-032.html
+</pre>
+</div>
 <div created="20160413073119438" modified="20160413073920724" tags="" title="Autocomplete Login Password" type="text/x-markdown">
 <pre>#正式命名
 未停用密碼欄位的自動完成 HTML 屬性
@@ -6880,7 +6917,7 @@ This plugin contains tools to help slice up long texts into individual tiddlers.
 #OWASP Testing Guide v4
 Test remember password functionality (OTG-AUTHN-005)</pre>
 </div>
-<div created="20160401013946949" modified="20160418013258119" tags="" title="Cross-site Scripting" type="text/x-markdown">
+<div created="20160401013946949" modified="20160506025057576" tags="" title="Cross-site Scripting" type="text/x-markdown">
 <pre>#正式命名
 跨網站 Scripting
 
@@ -6903,14 +6940,9 @@ Test remember password functionality (OTG-AUTHN-005)</pre>
 #修補辦法
 1. 限制使用者於URL上任意更改URL所帶的參數、以保持Server端所接收的資料的一致性。
 2. 嚴格的訂定並確定所有的input 參數以及結果。例如(Cookies, headers, query strings, forms, hidden欄位等等) 。
-3. 檢查來自POST 和 GET requests的 responses、並確認這些回傳的Responses是有效的。
-4. 在用戶端使用資料驗證機制。
-5. 在使用者輸入資料時、過濾衝突字元、括號、單雙引號，例：&lt;(小於)，&gt;(大於)，'(單引號)，&quot;(雙引號)，%(百分比符號)，; (分號)，+ (加號)，&amp; (連接符號)等。避免傳送出去的Scripts可被執行。
-6. 盡可能的限制客戶端所傳送出去的資料為字母、數字及其他符號(如標點符號、數學符號)。使用此種過濾機制可以減低攻擊者針對Cross-Site Scripting的攻擊。例如當攻擊者輸入&quot; &lt;script&gt;alert( 'aaa') &lt;/script&gt;&quot;, 此Script則會被過濾為&quot;scriptalertaaascript&quot;。 如必須使用到特殊標號、則可以將這些標號先置入在網頁中、以防攻擊者竄改。
-7. 使用雙重安全認證機制。
-8. 在使用任何Scripts時，必須確認來源。
-9. 不要相信或是使用來路不明的Scripts。
-10. HTML encode。
+3. 在使用者輸入資料時、過濾衝突字元、括號、單雙引號，例：&lt;(小於)，&gt;(大於)，'(單引號)，&quot;(雙引號)，%(百分比符號)，; (分號)，+ (加號)，&amp; (連接符號)等。避免傳送出去的Scripts可被執行。
+4. 盡可能的限制客戶端所傳送出去的資料為字母、數字及其他符號(如標點符號、數學符號)。使用此種過濾機制可以減低攻擊者針對Cross-Site Scripting的攻擊。例如當攻擊者輸入&quot; &lt;script&gt;alert( 'aaa') &lt;/script&gt;&quot;, 此Script則會被過濾為&quot;scriptalertaaascript&quot;。 如必須使用到特殊標號、則可以將這些標號先置入在網頁中、以防攻擊者竄改。
+5. HTML encode。
 
 #OWASP Testing Guide v4
 1. Testing for Reflected Cross Site Scripting (OTG-INPVAL-001)
@@ -6923,7 +6955,7 @@ search keyword
 # Write
 markdown</pre>
 </div>
-<div created="20160504075221027" modified="20160506021450048" tags="" title="Microsoft IIS tilde directory enumeration" type="text/x-markdown">
+<div created="20160504075221027" modified="20160506025606224" tags="" title="Microsoft IIS tilde directory enumeration" type="text/x-markdown">
 <pre>#正式命名
 MS IIS 檔案/目錄名稱列舉
 
@@ -6952,18 +6984,17 @@ MS IIS 檔案/目錄名稱列舉
 猜測到檔案名稱與未猜測到的回應不同，即有風險。
 
 #修補辦法
-1. 上WAF rule
-2. 關閉8.3 檔案格式。此方法只適用於新建立的檔案，原有檔案仍會保持該種檔案格式，建議採取以下措施：
+1. 關閉8.3 檔案格式。此方法只適用於新建立的檔案，原有檔案仍會保持該種檔案格式，建議採取以下措施：
 將整個網站目錄備份後，複製一份至新目錄(ex.tempnew)，然後將舊目錄(ex.temp)改名為tempold，再將新目錄改為舊目錄名(temp)，新目錄內的檔案及目錄名稱就不存在8.3 格式。
+
 (上述為官方提供之方法)
-3. 過濾 ~ (波浪)、*(米字號)、?(問號)
 
 #OWASP Testing Guide v4
-1.  Testing for Error Code (OTG-ERR-001)
+1.  
 
 #Reference:
 1. https://soroush.secproject.com/downloadable/microsoft_iis_tilde_character_vulnerability_feature.pdf
-</pre>
+2. http://blog.yam.com/yzl1218/article/71571630</pre>
 </div>
 <div created="20160429020239423" modified="20160506021517572" tags="" title="OpenSSH Brute Force Password" type="text/x-markdown">
 <pre>#正式命名
