@@ -6426,7 +6426,7 @@ Error message and password prompt
 <div created="20160308064715242" modified="20160411010856848" title="$:/state/tab/sidebar--1835078512">
 <pre>$:/core/ui/SideBar/Recent</pre>
 </div>
-<div list="[[ImageMagick vul., execute arbitrary code]] [[Apache Struts 2 (S2-032)]] [[Microsoft IIS tilde directory enumeration]] [[Cross-site Scripting]] [[How to use tvPTkm]]" title="$:/StoryList">
+<div list="[[Cross-site Scripting]] [[SQL Injection]] [[How to use tvPTkm]]" title="$:/StoryList">
 <pre></pre>
 </div>
 <div plugin-type="info" title="$:/temp/info-plugin" type="application/json">
@@ -7062,7 +7062,7 @@ OpenSSH連線之暴力密碼猜測
 #CVE
 1. CVE-2015-5600</pre>
 </div>
-<div created="20160411010858402" modified="20160414084231653" tags="" title="SQL Injection" type="text/x-markdown">
+<div created="20160411010858402" modified="20160512002646781" tags="" title="SQL Injection" type="text/x-markdown">
 <pre>#正式命名
 SQL 注入
 
@@ -7079,7 +7079,15 @@ SQL 注入
 #檢測方式
  1. 測試基本有無SQL injection 攻擊存在：' OR 1=1--
  2. 測試基本有無正確實做error handling：&quot;
- 3. 可利用sqlmap tool協助檢測：python.exe sqlmap\sqlmap.py -r [packetFile.txt] -p [parameterName] --level=5 --risk=3
+ 3. 可利用sqlmap tool協助檢測：python.exe  sqlmap\sqlmap.py -r [packetFile.txt] -p [parameterName] --level=5 --risk=3
+
+&gt; sqlmap檢測參數可使用
+1. --dbs
+2. --is-dba
+3. --current-user      
+4. --current-db
+5. --banner 
+6. --hostname
 
 #修補辦法
  1. 限定參數型別：
