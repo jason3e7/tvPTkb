@@ -271,7 +271,7 @@ Error message and password prompt
 
 <li>How to use tvPTkm</li>
 
-<li>ImageMagick vul., execute arbitrary code</li>
+<li>ImageMagick vulnerability</li>
 
 <li>Microsoft IIS tilde directory enumeration</li>
 
@@ -6426,7 +6426,7 @@ Error message and password prompt
 <div created="20160308064715242" modified="20160411010856848" title="$:/state/tab/sidebar--1835078512">
 <pre>$:/core/ui/SideBar/Recent</pre>
 </div>
-<div list="[[Cross-site Scripting]] [[SQL Injection]] [[How to use tvPTkm]]" title="$:/StoryList">
+<div list="[[OpenSSH Brute Force Password]] [[Apache Struts 2 (S2-032)]] [[ImageMagick vulnerability]] [[How to use tvPTkm]]" title="$:/StoryList">
 <pre></pre>
 </div>
 <div plugin-type="info" title="$:/temp/info-plugin" type="application/json">
@@ -6957,24 +6957,31 @@ search keyword
 # Write
 markdown</pre>
 </div>
-<div created="20160506030555151" modified="20160506031221510" tags="" title="ImageMagick vul., execute arbitrary code" type="text/x-markdown">
+<div created="20160506030555151" modified="20160513082343705" tags="" title="ImageMagick vulnerability" type="text/x-markdown">
 <pre>#正式命名
- ImageMagick漏洞，可執行任意程式
+ ImageMagick 漏洞
 
 #風險值
 嚴重
 
 #本質說明
-
+使用ImageMagick來呼叫外部lib處理文件，而呼叫外部的lib是透過系統的system command來執行。
 
 #影響
-
+可執行任意程式。
 
 #檢測方式
+1. 影響版本為ImageMagick 6.9.3-9 以前所有版本，包括ubuntum原安装的ImageMagick
+2. 新增一個.png檔，其內容為
 
+&gt; push graphic-context
+viewbox 0 0 640 480 fill 
+'url(https://example.com/image.jpg%22%7Ctouch hack.txt&quot;)'
+pop graphic-context
 
 #修補辦法
-
+1. 目前(2016/05)官方對漏洞尚未進行完整修復，因此不可只透過更新來防止此漏洞。
+2. 使用policy file 來限制ImageMagick 開發者，Global Policy位置通常位於  “/etc/ImageMagick”。 
 
 #OWASP Testing Guide v4
 1.  
@@ -6984,7 +6991,31 @@ markdown</pre>
 
 #Reference
 1. http://www.evil0x.com/posts/22405.html
-</pre>
+2. https://imagetragick.com/
+
+#Global Policy
+
+&lt;policymap&gt;
+
+  &lt;policy domain=&quot;coder&quot; rights=&quot;none&quot; pattern=&quot;EPHEMERAL&quot; /&gt;
+ 
+ &lt;policy domain=&quot;coder&quot; rights=&quot;none&quot; pattern=&quot;URL&quot; /&gt;
+
+  &lt;policy domain=&quot;coder&quot; rights=&quot;none&quot; pattern=&quot;HTTPS&quot; /&gt;
+
+  &lt;policy domain=&quot;coder&quot; rights=&quot;none&quot; pattern=&quot;MVG&quot; /&gt;
+
+  &lt;policy domain=&quot;coder&quot; rights=&quot;none&quot; pattern=&quot;MSL&quot; /&gt;
+
+  &lt;policy domain=&quot;coder&quot; rights=&quot;none&quot; pattern=&quot;TEXT&quot; /&gt;
+
+  &lt;policy domain=&quot;coder&quot; rights=&quot;none&quot; pattern=&quot;SHOW&quot; /&gt;
+
+  &lt;policy domain=&quot;coder&quot; rights=&quot;none&quot; pattern=&quot;WIN&quot; /&gt;
+
+  &lt;policy domain=&quot;coder&quot; rights=&quot;none&quot; pattern=&quot;PLT&quot; /&gt;
+
+&lt;/policymap&gt;</pre>
 </div>
 <div created="20160504075221027" modified="20160506025606224" tags="" title="Microsoft IIS tilde directory enumeration" type="text/x-markdown">
 <pre>#正式命名
