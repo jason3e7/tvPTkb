@@ -277,6 +277,8 @@ Error message and password prompt
 
 <li>OpenSSH Brute Force Password</li>
 
+<li>Path Traversal (Directory Traversal)</li>
+
 <li>SQL Injection</li>
 
 </ul>
@@ -6414,8 +6416,8 @@ Error message and password prompt
 <div created="20160308064705589" modified="20160308064711341" title="$:/SiteTitle">
 <pre>tvPTkm</pre>
 </div>
-<div created="20160324064859271" modified="20160506030308794" title="$:/state/showeditpreview">
-<pre>yes</pre>
+<div created="20160324064859271" modified="20160615062601091" title="$:/state/showeditpreview">
+<pre>no</pre>
 </div>
 <div created="20160324062929096" modified="20160324062930465" title="$:/state/tab-1749438307">
 <pre>$:/core/ui/ControlPanel/Plugins</pre>
@@ -6426,7 +6428,7 @@ Error message and password prompt
 <div created="20160308064715242" modified="20160411010856848" title="$:/state/tab/sidebar--1835078512">
 <pre>$:/core/ui/SideBar/Recent</pre>
 </div>
-<div list="[[OpenSSH Brute Force Password]] [[Apache Struts 2 (S2-032)]] [[ImageMagick vulnerability]] [[How to use tvPTkm]]" title="$:/StoryList">
+<div list="[[SQL Injection]] [[Path Traversal (Directory Traversal)]] [[Apache Struts 2 (S2-032)]] [[ImageMagick vulnerability]] [[How to use tvPTkm]]" title="$:/StoryList">
 <pre></pre>
 </div>
 <div plugin-type="info" title="$:/temp/info-plugin" type="application/json">
@@ -7092,6 +7094,34 @@ OpenSSH連線之暴力密碼猜測
 
 #CVE
 1. CVE-2015-5600</pre>
+</div>
+<div created="20160615062550358" modified="20160615063740309" tags="" title="Path Traversal (Directory Traversal)" type="text/x-markdown">
+<pre>#正式命名
+
+目錄走訪
+
+#風險值
+
+高
+
+#本質說明
+
+網站存在目錄走訪弱點可被攻擊者利用，弱點乃是利用檔案上傳、下載或是讀取檔案的參數，並未過濾危險字元以及限定特定目錄。攻擊者透過輸入跳脫資料夾的字元，如: linux的../ 、windows的..\。跳脫原本的資料夾拿到上層或是根目錄的權限，進而取得任意檔案，如/etc/passwd(帳號檔案) 、/etc/shadow(密碼Hash) 。
+
+#檢測方式
+
+基本檢測利用下載的參數 Filename=../../../../../../../etc/passwd，去取得檔案。
+除利用跳脫路徑的方法外，直接給予絕對路徑的檔案位置亦可，如Filename=/etc/passwd。
+找到 Website 有使用下載時，參數入後帶有檔名之處，最有可能有此漏洞，因此可利用Google Hacking的方式去找尋下載文件的位置，再做進一步的攻擊。
+
+#修補辦法
+1.	黑名單方式:針對參數過濾危險字元，如../ 或是 ..\ (編碼後的%2F、%5c)、&lt;、&gt;、%00、雙引號( &quot; )單引號( ' ) 百分比( % )分號( ; )左括弧( ( )右括弧( ) )連接符號( &amp; )加號( + )小於 ( &lt; )大於 ( &gt; )垂直線 ( | )倒退鍵 ( \b )空值 ( \0 )路徑切換符號( ../ )逗號( , )反斜線( \ )反斜線跳出引號( \&quot; )錢字號( $ )At 符號( @ )Unicode 字元 16 至 18 和 20 至 25。等
+2.	白名單限定:使用Regular Expression來檢查或是限定參數傳入的型態、長度。避免被攻擊者操弄更改參數
+3.	Server端的程式碼可限定參數傳入的路徑，即使攻擊者跳脫資料夾也會被限定在特定的資料夾下如下，String currentPath=&quot;\tradevan\src\com\file\&quot;+filter(currentFolderStr); 註:filter() 為過濾危險字元的函式
+4.	確認Web帳號的執行權限是否過大，目錄的權限是否有設定正確
+
+#OWASP Testing Guide v4
+Testing Directory traversal/file include (OTG-AUTHZ-001)</pre>
 </div>
 <div created="20160411010858402" modified="20160512002646781" tags="" title="SQL Injection" type="text/x-markdown">
 <pre>#正式命名
