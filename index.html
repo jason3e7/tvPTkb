@@ -277,6 +277,8 @@ Error message and password prompt
 
 <li>OpenSSH Brute Force Password</li>
 
+<li>Password Stored Unencrypted</li>
+
 <li>Path Traversal (Directory Traversal)</li>
 
 <li>SQL Injection</li>
@@ -6425,10 +6427,10 @@ Error message and password prompt
 <div created="20160324062916632" modified="20160324065030090" title="$:/state/tab/moresidebar-401116514">
 <pre>$:/core/ui/MoreSideBar/All</pre>
 </div>
-<div created="20160308064715242" modified="20160411010856848" title="$:/state/tab/sidebar--1835078512">
+<div created="20160308064715242" modified="20160705025456358" title="$:/state/tab/sidebar--1835078512">
 <pre>$:/core/ui/SideBar/Recent</pre>
 </div>
-<div list="[[SQL Injection]] [[Path Traversal (Directory Traversal)]] [[Apache Struts 2 (S2-032)]] [[ImageMagick vulnerability]] [[How to use tvPTkm]]" title="$:/StoryList">
+<div list="[[Password Stored Unencrypted]] [[Autocomplete Login Password]] [[SQL Injection]] [[How to use tvPTkm]]" title="$:/StoryList">
 <pre></pre>
 </div>
 <div plugin-type="info" title="$:/temp/info-plugin" type="application/json">
@@ -6897,7 +6899,7 @@ http: //xxx/index.action?method:%23_memberAccess%3D@ognl.OgnlContext@DEFAULT_MEM
 1. https://struts.apache.org/docs/s2-032.html
 </pre>
 </div>
-<div created="20160413073119438" modified="20160413073920724" tags="" title="Autocomplete Login Password" type="text/x-markdown">
+<div created="20160413073119438" modified="20160705032755778" tags="" title="Autocomplete Login Password" type="text/x-markdown">
 <pre>#正式命名
 未停用密碼欄位的自動完成 HTML 屬性
 
@@ -7095,6 +7097,28 @@ OpenSSH連線之暴力密碼猜測
 #CVE
 1. CVE-2015-5600</pre>
 </div>
+<div created="20160705024840662" modified="20160705035839178" tags="" title="Password Stored Unencrypted" type="text/x-markdown">
+<pre>#正式命名
+密碼儲存未加密
+
+#風險值
+中
+
+#本質說明
+1.機敏資訊未加密保存，若攻擊者獲取資料則能輕易使用。
+
+#檢測方式
+1.使用忘記密碼功能，系統若將密碼回傳給使用者，再檢視紀錄，發現密碼為明文，則代表密碼未採用Hash加密。
+
+#修補辦法
+應採用強度足夠之加密演算法進行機敏資料加密保存，密碼建議可採用Hash加密。
+
+#影響
+若攻擊者具有管理者權限之使用者亦可獲得全部帳戶之私人密碼，危害用戶個人隱私，如：攻擊者可使用此密碼嘗試其它系統，像Facebook…等。
+
+#OWASP Testing Guide v4
+Testing for Weak password policy (OTG-AUTHN-007)</pre>
+</div>
 <div created="20160615062550358" modified="20160615063740309" tags="" title="Path Traversal (Directory Traversal)" type="text/x-markdown">
 <pre>#正式命名
 
@@ -7123,7 +7147,7 @@ OpenSSH連線之暴力密碼猜測
 #OWASP Testing Guide v4
 Testing Directory traversal/file include (OTG-AUTHZ-001)</pre>
 </div>
-<div created="20160411010858402" modified="20160512002646781" tags="" title="SQL Injection" type="text/x-markdown">
+<div created="20160411010858402" modified="20160705025019234" tags="" title="SQL Injection" type="text/x-markdown">
 <pre>#正式命名
 SQL 注入
 
