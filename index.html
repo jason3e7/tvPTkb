@@ -6430,7 +6430,7 @@ Error message and password prompt
 <div created="20160308064715242" modified="20160705025456358" title="$:/state/tab/sidebar--1835078512">
 <pre>$:/core/ui/SideBar/Recent</pre>
 </div>
-<div list="[[Password Stored Unencrypted]] [[Autocomplete Login Password]] [[SQL Injection]] [[How to use tvPTkm]]" title="$:/StoryList">
+<div list="[[SQL Injection]] [[How to use tvPTkm]]" title="$:/StoryList">
 <pre></pre>
 </div>
 <div plugin-type="info" title="$:/temp/info-plugin" type="application/json">
@@ -7147,7 +7147,7 @@ Testing for Weak password policy (OTG-AUTHN-007)</pre>
 #OWASP Testing Guide v4
 Testing Directory traversal/file include (OTG-AUTHZ-001)</pre>
 </div>
-<div created="20160411010858402" modified="20160705025019234" tags="" title="SQL Injection" type="text/x-markdown">
+<div created="20160411010858402" modified="20160705081755503" tags="" title="SQL Injection" type="text/x-markdown">
 <pre>#正式命名
 SQL 注入
 
@@ -7178,9 +7178,10 @@ SQL 注入
  1. 限定參數型別：
 Ex. 數字參數只允許輸入數字內容
 透過正規表示式進行參數格式辨識，Ex. 身份證字號，開頭為大寫英文，後面連接9個數字。
- 2. 確定只能開啟特定副檔名。
- 3. 參數數值長度限制。
- 4. 過濾使用者輸入的特殊字元:雙引號( &quot; )單引號( ' )百分比( % )分號( ; )左括弧( ( )右括弧( ) )連接符號( &amp; )加號( + )小於 ( &lt; )大於 ( &gt; )垂直線 ( | )倒退鍵 ( \b )空值 ( \0 )路徑切換符號( ../ )逗號( , )反斜線( \ )反斜線跳出引號( \&quot; )錢字號( $ )At 符號( @ )Unicode 字元 16 至 18 和 20 至 25。
+ 2. 參數數值長度限制。
+ 3. 過濾使用者輸入的特殊字元:雙引號( &quot; )單引號( ' )百分比( % )分號( ; )左括弧( ( )右括弧( ) )連接符號( &amp; )加號( + )小於 ( &lt; )大於 ( &gt; )垂直線 ( | )倒退鍵 ( \b )空值 ( \0 )路徑切換符號( ../ )逗號( , )反斜線( \ )反斜線跳出引號( \&quot; )錢字號( $ )At 符號( @ )Unicode 字元 16 至 18 和 20 至 25。
+ 4. 參數化查詢 (Prepared Statements with Parameterized Queries)
+ 5. 預存程序(Stored Procedures)
 
 #OWASP Testing Guide v4
  1. Testing for SQL Injection (OTG-INPVAL-005)
