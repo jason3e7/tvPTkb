@@ -271,6 +271,8 @@ Error message and password prompt
 
 <li>How to use tvPTkm</li>
 
+<li>HTTP Headers</li>
+
 <li>ImageMagick vulnerability</li>
 
 <li>Microsoft IIS tilde directory enumeration</li>
@@ -6962,6 +6964,57 @@ Test remember password functionality (OTG-AUTHN-005)</pre>
 search keyword
 # Write
 markdown</pre>
+</div>
+<div created="20160706064329356" modified="20160706064442137" tags="" title="HTTP Headers" type="text/x-markdown">
+<pre>#正式命名
+HTTP標頭設定
+
+#風險值
+低
+
+#本質說明
+1.在伺服器設定加入某些 headers，瀏覽器收到 response 時就會執行相對應的防禦機制，如此一來可直接提升網頁應用程式的基本安全性。
+
+#檢測方式
+
+1.開啟網頁，按F12開啟Inspector，觀看network標籤，點選網站url並查看headers。
+
+2.利用curl指令，輸入：curl -L -A &quot;Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36&quot; -s -D -你要測試的網站 -o /dev/null。
+
+#修補辦法
+1.防禦 XSS (Cross Site Scripting)：
+
+* Content-Security-Policy
+* Set-Cookie: HttpOnly
+* X-XSS-Protection
+* X-Download-Options
+
+2.防禦 Clickjacking：
+
+* X-Frame-Options
+
+3.強化 HTTPS 機制：
+
+* Set-Cookie: Secure
+* Strict-Transport-Security
+
+4.避免瀏覽器誤判文件形態：
+
+* X-Content-Type-Options
+
+5.保護網站資源別被任意存取：
+
+* Access-Control-Allow-Origin（此 header 若設定錯誤會適得其反！）
+* X-Permitted-Cross-Domain-Policies
+
+
+#影響
+
+
+#References
+1.[OWASP Secure Headers Project](https://www.owasp.org/index.php/List_of_useful_HTTP_headers#tab=Headers)
+
+2.[HTTP Headers 的資安議題 (1)](http://devco.re/blog/2014/03/10/security-issues-of-http-headers-1/)</pre>
 </div>
 <div created="20160506030555151" modified="20160513082343705" tags="" title="ImageMagick vulnerability" type="text/x-markdown">
 <pre>#正式命名
