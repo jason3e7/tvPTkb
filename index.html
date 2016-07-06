@@ -283,6 +283,8 @@ Error message and password prompt
 
 <li>SQL Injection</li>
 
+<li>Weak SSL/TLS Ciphers, Insufficient Transport Layer Protection</li>
+
 </ul>
 </p>
 
@@ -6418,8 +6420,8 @@ Error message and password prompt
 <div created="20160308064705589" modified="20160308064711341" title="$:/SiteTitle">
 <pre>tvPTkm</pre>
 </div>
-<div created="20160324064859271" modified="20160615062601091" title="$:/state/showeditpreview">
-<pre>no</pre>
+<div created="20160324064859271" modified="20160706055650928" title="$:/state/showeditpreview">
+<pre>yes</pre>
 </div>
 <div created="20160324062929096" modified="20160324062930465" title="$:/state/tab-1749438307">
 <pre>$:/core/ui/ControlPanel/Plugins</pre>
@@ -7097,7 +7099,7 @@ OpenSSH連線之暴力密碼猜測
 #CVE
 1. CVE-2015-5600</pre>
 </div>
-<div created="20160705024840662" modified="20160705035839178" tags="" title="Password Stored Unencrypted" type="text/x-markdown">
+<div created="20160705024840662" modified="20160706004315962" tags="" title="Password Stored Unencrypted" type="text/x-markdown">
 <pre>#正式命名
 密碼儲存未加密
 
@@ -7186,6 +7188,39 @@ Ex. 數字參數只允許輸入數字內容
 #OWASP Testing Guide v4
  1. Testing for SQL Injection (OTG-INPVAL-005)
 </pre>
+</div>
+<div created="20160706004319786" modified="20160706062929988" tags="" title="Weak SSL/TLS Ciphers, Insufficient Transport Layer Protection" type="text/x-markdown">
+<pre>#正式命名
+Web 伺服器支援不安全的SSL通訊協定/加密組合
+
+#風險值
+中
+
+#本質說明
+1.不安全的傳輸協議或加密組合將會導致敏感資訊遭竊。
+
+#檢測方式
+1.打開nmap，輸入 nmap -sV --reason -PN -n --top-ports 100 你要檢測的站 ，確認那些port有SSL/TLS服務。
+
+2.打開nmap，輸入nmap --script ssl-cert,ssl-enum-ciphers -p 你要檢測的port 你要檢測的站，
+檢測Weak Cipher和SSLv2。
+
+3.打開TestSSLServer.jar，輸入java -jar TestSSLServer.jar 你要檢測的站，檢測支援的加密套件和是否會受到BEAST and CRIME 攻擊。
+
+4.打開testssl.sh，輸入./testssl.sh 你要檢測的站，檢測SSL/TLS。
+
+#修補辦法
+1.SSLv3若關閉，Google將無法支援XP上的IE 6。
+
+2.利用黑名單機制，排除不安全的協定和不安全的加密組合。
+
+3.SSLv2 含有兩項重大的通訊協定瑕疵，將伺服器設為使用 SSL 3.0 版或 TLS 1.0 版，停用SSL 2.0版。若要在 IIS 禁止使用 SSL 3.0 或 TLS 1.0 以外的通訊協定，請在 SCHANNEL下的 Protocols 機碼的PCT 1.0, SSL 2.0登錄子機碼中，將Enabled的 DWORD 資料設為 0x0。
+
+#影響
+在服務器中的一些錯誤配置可用於強制使用弱密碼組合，或者在最壞的情況沒有加密，將會允許攻擊者存取安全傳輸通道。其他錯誤配置可用於拒絕服務式攻擊。
+
+#OWASP Testing Guide v4
+Testing for Weak SSL/TLS Ciphers, Insufficient Transport Layer Protection (OTG-CRYPST-001)</pre>
 </div>
 
 </div>
